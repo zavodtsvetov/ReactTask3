@@ -1,15 +1,18 @@
-import s from "../App.module.css";
+import { InfoLayout } from "./InfoLayout";
+import PropTypes from "prop-types";
 
 export const Info = ({ currentPlayer, isDraw, isGameEnded }) => {
 	return (
-		<>
-			<div style={{ marginTop: "20px", fontSize: "50px" }}>
-				{isDraw === true
-					? "Ничья"
-					: isGameEnded === true
-						? `Победа ${currentPlayer}`
-						: `Ходит ${currentPlayer}`}
-			</div>
-		</>
+		<InfoLayout
+			currentPlayer={currentPlayer}
+			isDraw={isDraw}
+			isGameEnded={isGameEnded}
+		/>
 	);
+};
+
+InfoLayout.propTypes = {
+	currentPlayer: PropTypes.string,
+	isDraw: PropTypes.bool,
+	isGameEnded: PropTypes.bool,
 };

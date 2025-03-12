@@ -1,5 +1,6 @@
-import s from "../App.module.css";
-let nextId = 0;
+import PropTypes from "prop-types";
+import { checkWinner } from "../checkWinner";
+import { FieldLayout } from "./FIeldLayout";
 
 export const Field = ({
 	field,
@@ -9,51 +10,39 @@ export const Field = ({
 	isDraw,
 	setIsDraw,
 	isGameEnded,
+	setIsGameEnded,
 }) => {
-	const WIN_PATTERNS = [
-		[0, 1, 2],
-		[3, 4, 5],
-		[6, 7, 8], // Варианты побед по горизонтали
-		[0, 3, 6],
-		[1, 4, 7],
-		[2, 5, 8], // Варианты побед по вертикали
-		[0, 4, 8],
-		[2, 4, 6], // Варианты побед по диагонали
-	];
 	const handleCLick = (item, idx) => {
-		const newField = Object.assign([], field);
-		WIN_PATTERNS.some((pattern) => {
-			const [a, b, c] = pattern;
-			
-		});
-
-		if (item === "" && isDraw === false && isGameEnded === false) {
+		if (item === "" && isGameEnded === false) {
+			const newField = [...field];
 			newField[idx] = currentPlayer;
+			const isWinner = checkWinner(newField);
+			if (isWinner) {
+				setIsGameEnded(true);
+			} else if (!isWinner && !newField.includes("")) {
+				setIsDraw(true);
+			} else {
+				setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
+			}
 			setField(newField);
-
-			setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
 		}
 	};
 
 	return (
 		<>
-			<div className={s.mainField}>
-				<div className={s.field}>
-					{field.map((item, index) => {
-						return (
-							<button
-								onClick={() => {
-									handleCLick(item, index);
-								}}
-								className={s.button}
-								key={nextId++}
-							>
-								{item}
-							</button>
-						);
-					})}
-				</div>
-			</div>
+			<FieldLayout field={field} handleCLick={handleCLick} />
 		</>
 	);
+};
+
+Field.propTypes = {
+	field: PropTypes.object,
+	setField: PropTypes.object,
+	currentPlayer: PropTypes.string,
+	setCurrentPlayer: PropTypes.string,
+	handleCLick: PropTypes.func,
+	isDraw: PropTypes.bool,
+	setIsDraw: PropTypes.bool,
+	isGameEnded: PropTypes.bool,
+	setIsGameEnded: PropTypes.bool,
 };

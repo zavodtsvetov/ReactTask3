@@ -5,16 +5,30 @@ import { useState } from "react";
 
 function App() {
 	const [currentPlayer, setCurrentPlayer] = useState("X");
-	const [isGameEnded, setIsGameended] = useState(false);
+	const [isGameEnded, setIsGameEnded] = useState(false);
 	const [isDraw, setIsDraw] = useState(false);
 	const [field, setField] = useState(["", "", "", "", "", "", "", "", ""]);
 
 	const handleReplay = () => {
 		setCurrentPlayer("X");
-		setIsGameended(false);
+		setIsGameEnded(false);
 		setIsDraw(false);
 		setField(["", "", "", "", "", "", "", "", ""]);
 	};
+	const startButton = (
+		<button
+			onClick={handleReplay}
+			style={{
+				marginTop: "20px",
+				fontSize: "50px",
+				border: null,
+				background: "linear-gradient(skyBlue,blue)",
+				color: "white",
+			}}
+		>
+			Очистить поле
+		</button>
+	);
 
 	return (
 		<>
@@ -32,13 +46,10 @@ function App() {
 					currentPlayer={currentPlayer}
 					setCurrentPlayer={setCurrentPlayer}
 					isGameEnded={isGameEnded}
+					setIsGameEnded={setIsGameEnded}
 				/>
-				<button
-					onClick={handleReplay}
-					style={{ marginTop: "20px", fontSize: "50px" }}
-				>
-					Начать заново
-				</button>
+
+				{field.includes("X" || "O") ? startButton : ""}
 			</div>
 		</>
 	);
